@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AnalyzePage from '../components/islands/AnalyzePage';
+import { db } from '../db';
+import { folders } from '../db/schema';
+
+// 服务端预加载数据
+const initialFolders = await db.select().from(folders);
+---
+<Layout title="文件夹分析">
+  <AnalyzePage initialFolders={initialFolders} client:load />
+</Layout>
