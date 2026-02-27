@@ -1,6 +1,6 @@
 import type { APIContext } from 'astro';
-import { db } from '../../../../../../db';
-import { files } from '../../../../../../db/schema';
+import { db } from '../../../../../db';
+import { files } from '../../../../../db/schema';
 import { eq } from 'drizzle-orm';
 
 // GET /api/folders/[id]/files - 获取文件夹中的文件

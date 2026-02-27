@@ -1,8 +1,8 @@
 import type { APIContext } from 'astro';
-import { db } from '../../../../../../db';
-import { files } from '../../../../../../db/schema';
+import { db } from '../../../../../db';
+import { files } from '../../../../../db/schema';
 import { eq } from 'drizzle-orm';
-import { logger } from '../../../../../../lib/logger';
+import { logger } from '../../../../../lib/logger';
 
 // GET /api/files/[id]/download - 下载文件
 export async function GET({ params, request }: APIContext) {
