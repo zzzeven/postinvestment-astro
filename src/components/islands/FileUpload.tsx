@@ -306,7 +306,7 @@ export function FileUpload({ onUploadComplete, folderId, compact = false }: File
               reject(new Error('上传被取消'));
             });
 
-            xhr.open('POST', `${process.env.NEXT_PUBLIC_UPLOAD_SERVER_URL || 'http://localhost:3001'}/upload`);
+            xhr.open('POST', `${baseUrl}/api/upload`);
             xhr.send(formData);
           });
 
