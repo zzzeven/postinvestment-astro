@@ -1,19 +1,28 @@
 import { defineMiddleware } from 'astro:middleware';
 import { getUserBySession } from './lib/auth';
 
-// 不需要登录验证的路径
-const publicPaths = [
-  '/login',
-  '/api/auth/login',
-  '/api/files/search',
-  '/api/parse/status',
-];
-
 export const onRequest = defineMiddleware(async ({ url, cookies, locals, redirect, request }, next) => {
   const pathname = url.pathname;
 
-  // 公开路径，不需要验证
-  if (publicPaths.some(path => pathname.startsWith(path))) {
+  // API 路径 - 禁用 CSRF 检查，直接通过（兼容 base: '/postinvest' 前缀）
+  if (pathname.startsWith('/api') || pathname.startsWith('/postinvest/api')) {
+    const response = await next();
+
+    // 添加头部来禁用 Astro 的 CSRF 检查
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: {
+        ...response.headers,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+      },
+    });
+  }
+
+  // 登录页面 - 不需要验证
+  if (pathname.startsWith('/login')) {
     return next();
   }
 

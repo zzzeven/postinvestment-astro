@@ -17,4 +17,11 @@ export default defineConfig({
       noExternal: ['@radix-ui/react-*'],
     },
   },
+  security: {
+    checkOrigin: false,
+  },
+  // 允许跨站请求
+  experimental: {
+    clientPrerender: false,
+  },
 });
