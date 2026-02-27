@@ -238,7 +238,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
             <CardTitle
               className="text-xs md:text-sm truncate hover:text-primary cursor-pointer transition-colors"
               onClick={() => {
-                const previewUrl = `/api/files/${file.id}/download`;
+                const previewUrl = `${baseUrl}/api/files/${file.id}/download`;
                 window.open(previewUrl, '_blank', 'noopener,noreferrer');
               }}
               title="点击预览文档"
@@ -331,7 +331,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
           variant="outline"
           className="min-h-[44px] min-w-[44px] px-3 md:px-4"
           onClick={() => {
-            const previewUrl = `/api/files/${file.id}/download`;
+            const previewUrl = `${baseUrl}/api/files/${file.id}/download`;
             window.open(previewUrl, '_blank', 'noopener,noreferrer');
           }}
         >
