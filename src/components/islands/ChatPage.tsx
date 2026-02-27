@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, FileText, Sparkles, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Card } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { ScrollArea } from '../ui/scroll-area';
 
@@ -239,7 +239,7 @@ export default function ChatPage() {
 
         {/* 文件选择 */}
         <Card>
-          <div className="p-4">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-semibold text-sm">选择文档</h3>
               <Button
@@ -306,7 +306,7 @@ export default function ChatPage() {
                 )}
               </div>
             )}
-          </div>
+          </CardContent>
         </Card>
 
         {/* 对话区域 */}
