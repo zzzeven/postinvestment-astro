@@ -9,18 +9,19 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
-const navItems = [
-  { href: '/', icon: Home, label: '文件' },
-  { href: '/chat', icon: MessageCircle, label: '对话' },
-  { href: '/search', icon: Search, label: '搜索' },
-  { href: '/tags', icon: Tag, label: '标签' },
-  { href: '/analyze', icon: Sparkles, label: '分析' },
-  { href: '/quarterly', icon: FileEdit, label: '解析' },
-  { href: '/users', icon: Users, label: '用户' },
-];
-
 export function Header() {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const [pathname, setPathname] = useState('/');
+
+  const navItems = [
+    { href: `${baseUrl}/`, icon: Home, label: '文件' },
+    { href: `${baseUrl}/chat`, icon: MessageCircle, label: '对话' },
+    { href: `${baseUrl}/search`, icon: Search, label: '搜索' },
+    { href: `${baseUrl}/tags`, icon: Tag, label: '标签' },
+    { href: `${baseUrl}/analyze`, icon: Sparkles, label: '分析' },
+    { href: `${baseUrl}/quarterly`, icon: FileEdit, label: '解析' },
+    { href: `${baseUrl}/users`, icon: Users, label: '用户' },
+  ];
 
   useEffect(() => {
     setPathname(window.location.pathname);
@@ -28,8 +29,8 @@ export function Header() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.href = '/login';
+      await fetch(`${baseUrl}/api/auth/logout`, { method: 'POST' });
+      window.location.href = `${baseUrl}/login`;
     } catch (error) {
       console.error('登出失败:', error);
     }

@@ -52,6 +52,7 @@ interface LocalUploadFile {
 }
 
 export function FileUpload({ onUploadComplete, folderId, compact = false }: FileUploadProps) {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const [isDragging, setIsDragging] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<LocalUploadFile[]>([]);
   const [showProgressDialog, setShowProgressDialog] = useState(false);
@@ -322,7 +323,7 @@ export function FileUpload({ onUploadComplete, folderId, compact = false }: File
                 const tempFormData = new FormData();
                 tempFormData.append('file', uploadFile.file);
 
-                const tempBlobResponse = await fetch('/api/upload-temp-blob', {
+                const tempBlobResponse = await fetch(`${baseUrl}/api/upload-temp-blob`, {
                   method: 'POST',
                   body: tempFormData,
                 });
@@ -340,7 +341,7 @@ export function FileUpload({ onUploadComplete, folderId, compact = false }: File
             }
 
             try {
-              const metaResponse = await fetch('/api/save-file-meta', {
+              const metaResponse = await fetch(`${baseUrl}/api/save-file-meta`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -16,6 +16,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ initialFolders = [], initialFiles = [] }: DashboardProps) {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const [folders, setFolders] = useState<FolderType[]>(initialFolders);
   const [files, setFiles] = useState<FileType[]>(initialFiles);
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
 
   const loadFolders = async () => {
     try {
-      const response = await fetch('/api/folders');
+      const response = await fetch(`${baseUrl}/api/folders`);
       const data = await response.json();
       setFolders(data.folders || []);
     } catch (error) {
@@ -39,8 +40,8 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
     try {
       setIsLoading(true);
       const url = folderId
-        ? `/api/files?folderId=${folderId}`
-        : '/api/files?folderId=null';
+        ? `${baseUrl}/api/files?folderId=${folderId}`
+        : `${baseUrl}/api/files?folderId=null`;
       const response = await fetch(url);
       const data = await response.json();
       setFiles(data.files || []);
@@ -79,7 +80,7 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
     if (!name) return;
 
     try {
-      const response = await fetch('/api/folders', {
+      const response = await fetch(`${baseUrl}/api/folders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, parentId: selectedFolderId }),
@@ -105,7 +106,7 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
 
   const handleFolderDelete = async (folderId: string) => {
     try {
-      const response = await fetch(`/api/folders/${folderId}`, {
+      const response = await fetch(`${baseUrl}/api/folders/${folderId}`, {
         method: 'DELETE',
       });
 
@@ -135,7 +136,7 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
     if (!confirm('确定要删除这个文件吗？')) return;
 
     try {
-      const response = await fetch(`/api/files/${fileId}`, {
+      const response = await fetch(`${baseUrl}/api/files/${fileId}`, {
         method: 'DELETE',
       });
 
@@ -191,7 +192,7 @@ export default function Dashboard({ initialFolders = [], initialFiles = [] }: Da
       console.log('[Upload] 服务器上传成功', { uploadResult });
 
       console.log('[Upload] 步骤2: 保存元数据');
-      const metaResponse = await fetch('/api/save-file-meta', {
+      const metaResponse = await fetch(`${baseUrl}/api/save-file-meta`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

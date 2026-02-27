@@ -19,6 +19,7 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ fileId, fileName }: ChatInterfaceProps) {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +50,7 @@ export function ChatInterface({ fileId, fileName }: ChatInterfaceProps) {
       console.log('[Chat Frontend] 🔄 发送请求到 /api/ai/chat');
       const fetchStartTime = Date.now();
 
-      const response = await fetch('/api/ai/chat', {
+      const response = await fetch(`${baseUrl}/api/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -31,7 +31,9 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      // Get base URL from environment (configured in astro.config.mjs as base: '/postinvest')
+      const baseUrl = import.meta.env.BASE_URL || '';
+      const response = await fetch(`${baseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -45,7 +47,8 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
           description: `欢迎回来，${data.user.username}`,
         });
         // Redirect to home page
-        window.location.href = '/';
+        const baseUrl = import.meta.env.BASE_URL || '';
+        window.location.href = `${baseUrl}/`;
       } else {
         throw new Error(data.error || '登录失败');
       }

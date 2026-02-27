@@ -27,6 +27,7 @@ interface TagSelectorProps {
 }
 
 export function TagSelector({ fileId, onTagsChange }: TagSelectorProps) {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [fileTags, setFileTags] = useState<FileTag[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +39,7 @@ export function TagSelector({ fileId, onTagsChange }: TagSelectorProps) {
 
   const fetchAllTags = async () => {
     try {
-      const response = await fetch('/api/tags');
+      const response = await fetch(`${baseUrl}/api/tags`);
       if (response.ok) {
         const data = await response.json();
         setAllTags(data);
@@ -52,7 +53,7 @@ export function TagSelector({ fileId, onTagsChange }: TagSelectorProps) {
 
   const fetchFileTags = async () => {
     try {
-      const response = await fetch(`/api/files/${fileId}/tags`);
+      const response = await fetch(`${baseUrl}/api/files/${fileId}/tags`);
       if (response.ok) {
         const data = await response.json();
         setFileTags(data.tags || []);
@@ -65,7 +66,7 @@ export function TagSelector({ fileId, onTagsChange }: TagSelectorProps) {
 
   const handleAddTag = async (tagId: string) => {
     try {
-      const response = await fetch(`/api/files/${fileId}/tags`, {
+      const response = await fetch(`${baseUrl}/api/files/${fileId}/tags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tagId }),
@@ -84,7 +85,7 @@ export function TagSelector({ fileId, onTagsChange }: TagSelectorProps) {
 
   const handleRemoveTag = async (tagId: string) => {
     try {
-      const response = await fetch(`/api/files/${fileId}/tags?tagId=${tagId}`, {
+      const response = await fetch(`${baseUrl}/api/files/${fileId}/tags?tagId=${tagId}`, {
         method: 'DELETE',
       });
 
