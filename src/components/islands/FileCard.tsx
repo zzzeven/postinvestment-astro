@@ -27,6 +27,7 @@ interface ParseTaskStatus {
 }
 
 export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
+  const baseUrl = import.meta.env.BASE_URL || '';
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState<'idle' | 'chunking' | 'embedding' | 'done'>('idle');
@@ -45,7 +46,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
 
     const checkStatus = async () => {
       try {
-        const response = await fetch(`/api/parse/status?fileId=${file.id}`);
+        const response = await fetch(`${baseUrl}/api/parse/status?fileId=${file.id}`);
         if (response.ok) {
           const data = await response.json();
           setParseStatus({
@@ -88,7 +89,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
     setProcessingStep('chunking');
 
     try {
-      const response = await fetch('/api/embeddings/process', {
+      const response = await fetch(`${baseUrl}/api/embeddings/process`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileId: file.id }),
@@ -135,7 +136,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
 
   const handleRetryParse = async () => {
     try {
-      const response = await fetch('/api/parse/retry', {
+      const response = await fetch(`${baseUrl}/api/parse/retry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileId: file.id }),
@@ -162,7 +163,7 @@ export function FileCard({ file, onDelete, onProcessed }: FileCardProps) {
   };
 
   const handleChat = () => {
-    window.location.href = `/chat?fileId=${file.id}`;
+    window.location.href = `${baseUrl}/chat?fileId=${file.id}`;
   };
 
   // 渲染解析状态显示

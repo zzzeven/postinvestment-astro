@@ -9,7 +9,7 @@ const publicPaths = [
   '/api/parse/status',
 ];
 
-export const onRequest = defineMiddleware(async ({ url, cookies, locals, redirect }, next) => {
+export const onRequest = defineMiddleware(async ({ url, cookies, locals, redirect, request }, next) => {
   const pathname = url.pathname;
 
   // 公开路径，不需要验证
@@ -22,7 +22,9 @@ export const onRequest = defineMiddleware(async ({ url, cookies, locals, redirec
 
   if (!sessionToken) {
     // 未登录，重定向到登录页
-    return redirect('/login');
+    // 检查是否有 X-Forwarded-Path 头来确定基础路径
+    const basePath = request.headers.get('X-Forwarded-Path') || '';
+    return redirect(`${basePath}/login`);
   }
 
   // 验证会话并获取用户信息
@@ -30,7 +32,8 @@ export const onRequest = defineMiddleware(async ({ url, cookies, locals, redirec
 
   if (!user) {
     // 会话无效或已过期，重定向到登录页
-    return redirect('/login');
+    const basePath = request.headers.get('X-Forwarded-Path') || '';
+    return redirect(`${basePath}/login`);
   }
 
   // 将用户信息存储到 locals

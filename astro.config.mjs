@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,7 +10,8 @@ export default defineConfig({
     tailwind({ applyBaseStyles: false }),
   ],
   output: 'server',
-  adapter: vercel({ functionPerRoute: false }),
+  adapter: node({ mode: 'standalone' }),
+  base: '/postinvest',
   vite: {
     ssr: {
       noExternal: ['@radix-ui/react-*'],
